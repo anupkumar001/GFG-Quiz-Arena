@@ -3,8 +3,8 @@
  Set SUPABASE_URL and SUPABASE_ANON_KEY below after creating the Supabase project.
  Owner access is controlled by database RLS policies, not by hiding a button.
 */
-const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
-const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+const SUPABASE_URL = "https://ojqaeofedwkfugmhbrxv.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_r-xkLPo0u23H_PMk1NwkRQ_Qyn72ni0";
 const configured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("PASTE_") && !SUPABASE_ANON_KEY.includes("PASTE_");
 const db = configured && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 const $ = (id) => document.getElementById(id);
