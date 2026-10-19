@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GFG Quiz Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="#" id="brandHome"><span class="brand-mark">G</span><span>GFG <b>Quiz Arena</b></span></a>
+    <div class="top-actions"><span class="live-dot"></span><span class="top-label">Learn. Think. Win.</span><button class="btn btn-ghost btn-small" id="ownerLoginBtn">Owner Login</button></div>
+  </div>
+  <main>
+    <section id="homeView" class="view">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> CAMPUS QUIZ PLATFORM</div>
+          <h1>Challenge your<br><span>knowledge.</span></h1>
+          <p>Think fast, answer smart, and see where you stand. Choose a quiz and put your knowledge to the test.</p>
+          <div class="hero-actions"><a href="#quiz-list" class="btn btn-primary">Explore Quizzes <span>↘</span></a><div class="hero-note"><span class="note-icon">◷</span> Timed questions · Instant results</div></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="float-card card-top"><span class="float-icon">✦</span><span><b>Stay curious</b><small>Every question counts</small></span></div>
+          <div class="quiz-illustration"><div class="illustration-head"><span>QUIZ MODE</span><span class="mini-dot"></span></div><div class="illustration-number">01<span>/05</span></div><div class="illustration-bar"><i></i></div><div class="illustration-line wide"></div><div class="illustration-line"></div><div class="illustration-option selected"><span>A</span><i></i></div><div class="illustration-option"><span>B</span><i></i></div><div class="illustration-option"><span>C</span><i></i></div></div>
+          <div class="float-card card-bottom"><span class="score-icon">✓</span><span><b>Ready, set, solve!</b><small>Your next win starts here</small></span></div>
+          <div class="spark spark-one">✳</div><div class="spark spark-two">✦</div>
+        </div>
+      </div>
+      <section id="quiz-list" class="quiz-section">
+        <div class="section-heading"><div><div class="eyebrow">PICK YOUR CHALLENGE</div><h2>Available quizzes<span class="green-period">.</span></h2></div><span class="section-caption" id="quizCount">Loading quizzes…</span></div>
+        <div id="quizGrid" class="quiz-grid"><div class="empty-state"><div class="loader"></div><p>Loading available quizzes…</p></div></div>
+      </section>
+      <section class="bottom-banner"><div class="banner-symbol">✦</div><div><h3>Ready to test yourself?</h3><p>Choose a quiz, focus up, and give it your best shot.</p></div><a href="#quiz-list" class="btn btn-dark">Find a quiz <span>→</span></a></section>
+    </section>
+
+    <section id="studentView" class="view hidden">
+      <button class="back-link" id="backFromStudent">← Back to quizzes</button>
+      <div class="form-layout"><div class="form-intro"><div class="eyebrow">BEFORE YOU BEGIN</div><h1>First, let's<br><span>meet you.</span></h1><p>Fill in your details before starting the quiz. Make sure your information is correct.</p><div class="form-tip"><span>✦</span><div><b>Quick tip</b><p>Find a quiet spot and keep an eye on the timer once the quiz begins.</p></div></div></div>
+      <form id="studentForm" class="panel form-panel"><div class="panel-kicker">PARTICIPANT DETAILS</div><h2>Join the quiz</h2><p class="muted" id="selectedQuizName">Your selected quiz</p>
+        <label for="studentName">Full name</label><input id="studentName" name="name" required maxlength="100" placeholder="Enter your full name">
+        <label for="department">Department</label><select id="department" required><option value="">Select your department</option><option>CSE</option><option>IT</option><option>ECE</option><option>EEE</option><option>Mechanical Engineering</option><option>Civil Engineering</option><option>Electrical Engineering</option><option>MBA</option><option>MCA</option><option>Other</option></select>
+        <label for="year">Year of study</label><select id="year" required><option value="">Select your year</option><option>1st Year</option><option>2nd Year</option><option>3rd Year</option><option>4th Year</option><option>Other</option></select>
+        <button class="btn btn-primary btn-full" type="submit">Start quiz <span>→</span></button><p class="form-footnote">By continuing, you confirm these details are accurate.</p>
+      </form></div>
+    </section>
+
+    <section id="quizView" class="view hidden">
+      <div class="quiz-topline"><button class="back-link" id="quitQuiz">← Exit quiz</button><span class="quiz-live"><i></i> QUIZ IN PROGRESS</span></div>
+      <div class="quiz-play-layout"><div class="quiz-main panel"><div class="question-meta"><span id="questionCounter">QUESTION 01 / 05</span><span id="questionPoints">Choose one answer</span></div><div class="progress-track"><i id="questionProgress"></i></div><h1 id="questionText">Question text</h1><div id="answerOptions" class="answer-options"></div><div class="quiz-footer"><span id="answerHint">Select the best answer.</span><button id="nextQuestionBtn" class="btn btn-primary" disabled>Next question <span>→</span></button></div></div>
+      <aside class="timer-panel panel"><div class="timer-label">TIME REMAINING</div><div class="timer-ring" id="timerRing"><div><strong id="timerNumber">30</strong><span>SECONDS</span></div></div><p>Keep your focus.<br>Time moves quickly!</p><div class="timer-divider"></div><div class="side-stat"><span>QUIZ</span><b id="playingQuizTitle">Quiz title</b></div><div class="side-stat"><span>ANSWERED</span><b id="answeredCount">0 questions</b></div></aside></div>
+    </section>
+
+    <section id="resultView" class="view hidden">
+      <div class="result-wrap panel"><div class="result-badge">✓</div><div class="eyebrow">QUIZ COMPLETED</div><h1 id="resultHeading">Well done!</h1><p id="resultSubheading" class="muted">Here is your result.</p><div class="score-display"><strong id="scoreValue">0</strong><span id="scoreOutOf">/ 0</span></div><div class="score-track"><i id="scoreBar"></i></div><div class="result-stats"><div><span>ACCURACY</span><b id="accuracyValue">0%</b></div><div><span>PARTICIPANT</span><b id="participantValue">Student</b></div><div><span>DEPARTMENT</span><b id="departmentValue">CSE</b></div></div><button class="btn btn-primary" id="returnHomeBtn">Back to home <span>→</span></button></div>
+    </section>
+
+    <section id="ownerView" class="view hidden">
+      <div class="owner-header"><div><div class="eyebrow">PRIVATE WORKSPACE</div><h1>Owner <span>dashboard.</span></h1><p class="muted">Create quizzes, manage questions, and review student results.</p></div><button class="btn btn-ghost" id="ownerLogoutBtn">Log out</button></div>
+      <div class="owner-tabs"><button class="owner-tab active" data-tab="manage">Quiz manager</button><button class="owner-tab" data-tab="results">Student results</button></div>
+      <div id="ownerManageTab">
+        <div class="owner-grid"><form id="quizCreateForm" class="panel owner-form"><div class="panel-kicker">CREATE A QUIZ</div><h2>New quiz</h2><label for="newQuizTitle">Quiz title</label><input id="newQuizTitle" required maxlength="120" placeholder="e.g. Web Development Basics"><label for="newQuizDescription">Short description</label><textarea id="newQuizDescription" maxlength="300" placeholder="What will students be tested on?"></textarea><label class="check-row"><input id="newQuizPublished" type="checkbox"> Publish quiz for students</label><button class="btn btn-primary btn-full" type="submit">Create quiz <span>+</span></button></form>
+        <div class="panel owner-list-panel"><div class="panel-kicker">YOUR QUIZZES</div><h2>Manage quizzes</h2><div id="ownerQuizList" class="owner-quiz-list"><p class="muted">Loading your quizzes…</p></div></div></div>
+        <div id="questionEditor" class="panel question-editor hidden"><div class="editor-header"><div><div class="panel-kicker">QUESTION BUILDER</div><h2 id="editorQuizTitle">Edit quiz</h2><p class="muted">Add as many options as you need. Choose the correct answer and set each question's timer.</p></div><button class="btn btn-ghost" id="closeEditor">Close</button></div>
+          <form id="questionForm"><input type="hidden" id="editingQuizId"><label for="questionInput">Question</label><textarea id="questionInput" required maxlength="2000" placeholder="Write your question here…"></textarea><div class="options-head"><label>Answer options</label><button type="button" class="text-button" id="addOptionBtn">+ Add option</button></div><div id="optionEditorList"></div><div class="editor-bottom"><div class="timer-field"><label for="questionTimer">Timer for this question</label><div class="timer-input-wrap"><input id="questionTimer" type="number" min="5" max="600" value="30" required><span>seconds</span></div></div><button type="submit" class="btn btn-primary">Save question <span>✓</span></button></div></form>
+          <div class="saved-questions"><h3>Questions in this quiz <span id="savedQuestionCount">0</span></h3><div id="savedQuestionList"></div></div>
+        </div>
+      </div>
+      <div id="ownerResultsTab" class="panel results-panel hidden"><div class="panel-kicker">PARTICIPANT ACTIVITY</div><h2>Student results</h2><div class="table-wrap"><table><thead><tr><th>Student</th><th>Department</th><th>Year</th><th>Quiz</th><th>Score</th><th>Date</th></tr></thead><tbody id="resultsTableBody"><tr><td colspan="6">Loading results…</td></tr></tbody></table></div></div>
+    </section>
+  </main>
+  <footer><span>Made for curious minds.</span><strong>Site Build by Anup Kumar</strong></footer>
+
+  <div class="modal-backdrop hidden" id="ownerModal"><div class="modal panel"><button class="modal-close" id="closeOwnerModal">×</button><div class="brand modal-brand"><span class="brand-mark">G</span><span>GFG <b>Quiz Arena</b></span></div><div class="eyebrow">RESTRICTED ACCESS</div><h2>Owner sign in</h2><p class="muted">Sign in with the owner account to manage quizzes.</p><form id="ownerLoginForm"><label for="ownerEmail">Owner email</label><input type="email" id="ownerEmail" required placeholder="you@example.com"><label for="ownerPassword">Password</label><input type="password" id="ownerPassword" required placeholder="Enter your password"><button class="btn btn-primary btn-full" type="submit">Sign in securely <span>→</span></button><p class="form-footnote">Owner access is protected by Supabase authentication and database policies.</p></form></div></div>
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
